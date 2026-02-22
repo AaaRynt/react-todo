@@ -1,0 +1,4 @@
+main > *:not(ul, ol) {
+  display: flex;
+  width: 100%;
+}
