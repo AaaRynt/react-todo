@@ -70,10 +70,11 @@ export const Todo = ({ todos, setTodos }: Props) => {
                   />
                 ) : (
                   <p
-                    className={` ${
+                    className={`${
                       todo.done ? 'text-neutral-400 line-through decoration-blue-500' : 'text-neutral-300 no-underline'
                     }`}
                     onDoubleClick={() => {
+                      if(todo.id === editingId) return
                       setEditingId(todo.id)
                       setEditingValue(todo.name)
                     }}
