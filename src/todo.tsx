@@ -70,8 +70,8 @@ export const Todo = ({ todos, setTodos }: Props) => {
                   />
                 ) : (
                   <p
-                    className={`text-neutral-300 ${
-                      todo.done ? 'text-neutral-400 line-through decoration-blue-500' : ''
+                    className={` ${
+                      todo.done ? 'text-neutral-400 line-through decoration-blue-500' : 'text-neutral-300 no-underline'
                     }`}
                     onDoubleClick={() => {
                       setEditingId(todo.id)
