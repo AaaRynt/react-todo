@@ -1,50 +1,49 @@
 import { useState } from 'react'
-import { RiMenuAddLine, RiGithubFill } from './assets/icons'
+import { RiMenuAddLine } from './assets/icons'
+import type { todoType } from './types/todoType'
+import { Todo } from './todo'
+import { useInput } from './hooks/useInput'
+import { Footer } from './footer'
 
 export default function App() {
-  type Todo = {
-    todo: string
-    id: number
+  const input = useInput('')
+  const [todoRaw, setTodoRaw] = useState<todoType[]>([])
+
+  const add = () => {
+    if (!input.value.trim()) return
+
+    setTodoRaw([{ name: input.value, id: Date.now(), done: false }, ...todoRaw])
+    input.reset()
   }
-  const [todoRaw, setTodoRaw] = useState<Todo[]>([
-    { todo: 'hello', id: 1 },
-    { todo: 'world', id: 2 },
-  ])
+
   return (
     <>
-      <main className="flex w-7/8 flex-col items-center gap-4 rounded-lg bg-gray-800 p-8 shadow-xl">
-        <h1 className="justify-center text-4xl font-bold tracking-wider">To-Do list</h1>
+      <main className="flex w-7/8 flex-col items-center gap-4 rounded-lg bg-neutral-800 p-8 shadow-xl">
+        <h1 className="change-color justify-center text-4xl font-bold tracking-wider">To-Do list</h1>
         <div className="w-full flex-row gap-8">
           <input
             type="text"
             placeholder="Add a new ToDo..."
-            className="flex-1 items-center justify-center rounded-sm px-4 outline placeholder:text-neutral-600 focus:outline-blue-500 dark:h-10"
+            {...input}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                add()
+              }
+            }}
+            className="h-10 flex-1 items-center justify-center rounded-sm px-4 outline placeholder:text-neutral-600 focus:outline-blue-500"
           />
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-sm outline duration-300 ease-in-out hover:text-[rgb(88,196,220)]"
-            onClick={() => setTodoRaw([...todoRaw, { todo: 'world', id: 2 }])}
-          >
-            <RiMenuAddLine className="w-2/3" />
+          <button className="from-button h-10 w-10 outline hover:text-[rgb(88,196,220)]" onClick={add}>
+            <RiMenuAddLine className="w-3/5" />
           </button>
         </div>
-        <div className="justify-between text-neutral-700">
+        <div className="justify-between text-gray-500">
           <span>Total:{todoRaw.length}</span>
-          <span>Finish:</span>
+          <span>Finish: {todoRaw.filter((todo) => todo.done).length}</span>
         </div>
-        <ul className="w-full">
-          {todoRaw.map((todo) => (
-            <li key={todo.id} className="m-4 flex h-12 w-full items-center rounded-lg bg-slate-800 outline">
-              {todo.todo}
-            </li>
-          ))}
-        </ul>
+        <Todo todos={todoRaw} setTodos={setTodoRaw} />
       </main>
-      <footer>
-        <a href="https://github.com/AaaRynt/react-todo" target="_blank" className="flex hover:underline">
-          <RiGithubFill className="mr-4 h-6" />
-          <span> github.com/AaaRynt/react-todo</span>
-        </a>
-      </footer>
+
+      <Footer />
     </>
   )
 }

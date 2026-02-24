@@ -2,3 +2,39 @@ main > *:not(ul, ol) {
   display: flex;
   width: 100%;
 }
+
+.change-color {
+  animation: change-color 5s linear infinite;
+}
+
+@keyframes change-color {
+  0% {
+    color: hsl(0, 20%, 80%);
+  }
+  25% {
+    color: hsl(90, 20%, 80%);
+  }
+  50% {
+    color: hsl(180, 20%, 80%);
+  }
+  75% {
+    color: hsl(270, 20%, 80%);
+  }
+  100% {
+    color: hsl(360, 20%, 80%);
+  }
+}
+
+.from-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20%;
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+li button {
+  height: 24px;
+  width: 24px;
+}
