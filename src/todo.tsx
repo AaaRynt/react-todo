@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { todoType } from './types/todoType'
 import { RiCloseLine, RiDeleteBinLine, RiEdit2Line, RiSave3Line } from './assets/icons'
 import pencil from './assets/audio/pencil_check_mark_1-88805.mp3'
+import trash from './assets/audio/drag to trash.mp3'
 
 type Props = {
   todos: todoType[]
@@ -17,14 +18,15 @@ type BtnProps = {
 }
 
 const pencilMp3 = new Audio(pencil)
+const trashMp3 = new Audio(trash)
 
 export const Todo = ({ todos, setTodos }: Props) => {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [editingValue, setEditingValue] = useState('')
 
   const toggleTodo = (id: number, checked: boolean) => {
-    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, done: checked } : todo)))
     if (checked) pencilMp3.play()
+    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, done: checked } : todo)))
   }
   const save = (id: number) => {
     if (!editingValue.trim()) return
@@ -45,12 +47,17 @@ export const Todo = ({ todos, setTodos }: Props) => {
               className="m-4 flex h-12 w-full items-center justify-between rounded-lg px-4 outline-1 outline-neutral-600"
             >
               <div className="flex items-center gap-4">
-                <input
-                  type="checkbox"
-                  checked={todo.done}
-                  onChange={(e) => toggleTodo(todo.id, e.target.checked)}
-                  className="cursor-pointer"
-                />
+                {todo.id === editingId ? (
+                  <div className="h-3.25 w-3.25"></div>
+                ) : (
+                  <input
+                    type="checkbox"
+                    checked={todo.done}
+                    onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+                    className="cursor-pointer"
+                  />
+                )}
+
                 <AddAt todoProps={todo} />
                 {editingId === todo.id ? (
                   <input
@@ -107,18 +114,25 @@ const Btns = ({ todo, setTodos, editingId, setEditingId, setEditingValue, save }
         </>
       ) : (
         <>
-          <button
-            className="from-button hover:text-green-500"
-            onClick={() => {
-              setEditingId(todo.id)
-              setEditingValue(todo.name)
-            }}
-          >
-            <RiEdit2Line />
-          </button>
+          {todo.done ? (
+            ''
+          ) : (
+            <button
+              className="from-button hover:text-green-500"
+              onClick={() => {
+                setEditingId(todo.id)
+                setEditingValue(todo.name)
+              }}
+            >
+              <RiEdit2Line />
+            </button>
+          )}
           <button
             className="from-button delete hover:text-red-500"
-            onClick={() => setTodos((p) => p.filter((t) => todo.id !== t.id))}
+            onClick={() => {
+              trashMp3.play()
+              setTodos((p) => p.filter((t) => todo.id !== t.id))
+            }}
           >
             <RiDeleteBinLine />
           </button>

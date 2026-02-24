@@ -38,3 +38,13 @@ li button {
   width: 24px;
   height: 24px;
 }
+
+[type='checkbox']:hover ~ p {
+  text-decoration: line-through var(--color-blue-500) solid 1px;
+}
+
+li:has(.delete:hover) time,
+li:has(.delete:hover) p {
+  text-decoration: line-through var(--color-red-500) double 1px;
+  filter: brightness(0.6);
+}
