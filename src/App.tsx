@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <>
-      <main className="flex w-7/8 flex-col items-center gap-4 rounded-lg bg-neutral-800 p-8 shadow-xl">
+      <main className="flex w-7/8 flex-col items-center gap-4 rounded-xl bg-neutral-800 p-8 shadow-xl">
         <h1 className="change-color justify-center text-4xl font-bold tracking-wider">To-Do list</h1>
         <Input setTodos={setTodoRaw} />
         <div className="justify-between text-gray-500">

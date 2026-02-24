@@ -1,19 +1,35 @@
+import { useState } from 'react'
 import type { todoType } from './types/todoType'
 import { RiCloseLine, RiDeleteBinLine, RiEdit2Line, RiSave3Line } from './assets/icons'
-import { useState } from 'react'
 import pencil from './assets/audio/pencil_check_mark_1-88805.mp3'
-const pencilMp3 = new Audio(pencil)
 
 type Props = {
   todos: todoType[]
   setTodos: React.Dispatch<React.SetStateAction<todoType[]>>
 }
+type BtnProps = {
+  todo: todoType
+  setTodos: React.Dispatch<React.SetStateAction<todoType[]>>
+  editingId: number | null
+  setEditingId: React.Dispatch<React.SetStateAction<number | null>>
+  setEditingValue: React.Dispatch<React.SetStateAction<string>>
+  save: (id: number) => void
+}
+
+const pencilMp3 = new Audio(pencil)
 
 export const Todo = ({ todos, setTodos }: Props) => {
-  const [isEdit, setIsEdit] = useState(false)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editingValue, setEditingValue] = useState('')
+
   const toggleTodo = (id: number, checked: boolean) => {
     setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, done: checked } : todo)))
     if (checked) pencilMp3.play()
+  }
+  const save = (id: number) => {
+    if (!editingValue.trim()) return
+    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, name: editingValue } : t)))
+    setEditingId(null)
   }
 
   return (
@@ -36,14 +52,37 @@ export const Todo = ({ todos, setTodos }: Props) => {
                   className="cursor-pointer"
                 />
                 <AddAt todoProps={todo} />
-                <p
-                  className={`text-neutral-300 ${todo.done ? 'text-neutral-400 line-through decoration-blue-500' : ''}`}
-                  onDoubleClick={() => setIsEdit(!isEdit)}
-                >
-                  {todo.name}
-                </p>
+                {editingId === todo.id ? (
+                  <input
+                    value={editingValue}
+                    onChange={(e) => setEditingValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') save(todo.id)
+                    }}
+                    className="rounded-sm pl-2 outline"
+                  />
+                ) : (
+                  <p
+                    className={`text-neutral-300 ${
+                      todo.done ? 'text-neutral-400 line-through decoration-blue-500' : ''
+                    }`}
+                    onDoubleClick={() => {
+                      setEditingId(todo.id)
+                      setEditingValue(todo.name)
+                    }}
+                  >
+                    {todo.name}
+                  </p>
+                )}
               </div>
-              <Btns />
+              <Btns
+                todo={todo}
+                setTodos={setTodos}
+                editingId={editingId}
+                setEditingId={setEditingId}
+                setEditingValue={setEditingValue}
+                save={save}
+              />
             </li>
           ))}
         </ul>
@@ -52,26 +91,35 @@ export const Todo = ({ todos, setTodos }: Props) => {
   )
 }
 
-const Btns = () => {
-  const [isEdit, setIsEdit] = useState(false)
+const Btns = ({ todo, setTodos, editingId, setEditingId, setEditingValue, save }: BtnProps) => {
+  const isEditing = editingId === todo.id
 
   return (
     <div className="flex gap-5">
-      {isEdit ? (
+      {isEditing ? (
         <>
-          <button className="from-button hover:text-blue-500">
+          <button className="from-button hover:text-blue-500" onClick={() => save(todo.id)}>
             <RiSave3Line />
           </button>
-          <button className="from-button hover:bg-neutral-700" onClick={() => setIsEdit(!isEdit)}>
+          <button className="from-button hover:bg-neutral-700" onClick={() => setEditingId(null)}>
             <RiCloseLine />
           </button>
         </>
       ) : (
         <>
-          <button className="from-button hover:text-green-500" onClick={() => setIsEdit(!isEdit)}>
+          <button
+            className="from-button hover:text-green-500"
+            onClick={() => {
+              setEditingId(todo.id)
+              setEditingValue(todo.name)
+            }}
+          >
             <RiEdit2Line />
           </button>
-          <button className="from-button hover:text-red-500">
+          <button
+            className="from-button delete hover:text-red-500"
+            onClick={() => setTodos((p) => p.filter((t) => todo.id !== t.id))}
+          >
             <RiDeleteBinLine />
           </button>
         </>
