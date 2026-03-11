@@ -137,7 +137,11 @@ const Btns = ({ todo, setTodos, editingId, setEditingId, setEditingValue, save }
             </button>
           )}
           <button
+<<<<<<< HEAD
             className="from-button hover:text-red-500!"
+=======
+            className="from-button! delete hover:text-red-500!"
+>>>>>>> 554e4e8 (Ant Design)
             onClick={() => {
               trashMp3.play()
               setTodos((p) => p.filter((t) => todo.id !== t.id))
@@ -163,6 +167,10 @@ const AddAt = ({ todoProps }: { todoProps: todoType }) => {
   )
 }
 
+<<<<<<< HEAD
+=======
+// 修复后的 ModalButton 组件
+>>>>>>> 554e4e8 (Ant Design)
 const ModalButton: React.FC<{
   todo: todoType
   setTodos: React.Dispatch<React.SetStateAction<todoType[]>>
@@ -171,7 +179,11 @@ const ModalButton: React.FC<{
   const [localValue, setLocalValue] = useState(todo.name)
 
   const showModal = () => {
+<<<<<<< HEAD
     setLocalValue(todo.name)
+=======
+    setLocalValue(todo.name) // 打开Modal时用当前todo的值初始化
+>>>>>>> 554e4e8 (Ant Design)
     setIsModalOpen(true)
   }
 
