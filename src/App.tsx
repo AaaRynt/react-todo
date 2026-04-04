@@ -1,3 +1,4 @@
+// src/App.tsx
 import { useState } from 'react'
 import type { todoType } from './types/todoType'
 import { Input } from './input'

@@ -1,3 +1,4 @@
+// src/footer.tsx
 import { RiGithubFill } from './assets/icons'
 export const Footer = () => {
   return (
