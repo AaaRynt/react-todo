@@ -12,11 +12,15 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d1a8c93 (pnpm update)
     "@tailwindcss/vite": "^4.2.2",
     "antd": "^6.3.6",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2"
+<<<<<<< HEAD
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
@@ -32,6 +36,12 @@
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
 >>>>>>> 554e4e8 (Ant Design)
+=======
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^24.12.2",
+>>>>>>> d1a8c93 (pnpm update)
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
